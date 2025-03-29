@@ -2,16 +2,33 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ResumeFlow</title>
+  <link rel="stylesheet" href="src/styles/main.css">
+  <script type="module" src="src/main.js"></script>
 </head>
 
-<body>
-  <div id="app" class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <h1 class="text-4xl font-bold text-blue-600">Hello, ResumeFlow!</h1>
-  </div>
-  <script type="module" src="/src/main.js"></script>
+<body class="bg-gray-100">
+  <header id="main-top-bar" class="bg-white">
+    <h1 id="title" class="text-2xl font-bold">ResumeFlow</h1>
+  </header>
+  <main class="flex h-screen">
+    <aside id="left-sidebar" class="w-1/5 bg-white p-4 hidden">
+      <div id="resume-list"></div>
+    </aside>
+    <section id="center-content" class="flex-grow p-4">
+      <div id="resume-preview">
+        <div id="resume-content" class="page"></div>
+      </div>
+    </section>
+    <aside id="right-sidebar" class="w-1/5 bg-white p-4 hidden">
+      <div id="analysis-content"></div>
+    </aside>
+  </main>
+  <footer class="text-center p-2">
+    <p>&copy; Layish Sieger - ResumeFlow</p>
+  </footer>
 </body>
 
 </html>
