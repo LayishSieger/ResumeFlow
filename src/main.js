@@ -1,4 +1,7 @@
-console.log('ResumeFlow initialized');
+import './style.css';
+import { initUI } from './ui.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM content loaded');
+  console.log('ResumeFlow initialized');
+  initUI();
 });

@@ -4,27 +4,61 @@
 
 @layer base {
   body {
-    @apply font-raleway text-gray-600;
+    @apply font-raleway bg-black text-gray-600 flex flex-col h-screen w-screen overflow-hidden scrollbar-thin min-h-screen;
+  }
+
+  a {
+    @apply no-underline text-primary-dark;
+  }
+
+  a:hover {
+    @apply text-primary-darker;
   }
 }
 
 @layer components {
   #main-top-bar {
-    @apply flex items-center justify-center p-2 border-b border-gray-200;
+    @apply relative flex items-center justify-between p-2 border-b border-gray-200;
+  }
+
+  .main-top-bar-btn {
+    @apply p-2 cursor-pointer hover:bg-gray-100 rounded-lg;
+  }
+
+  .main-top-bar-btn.active,
+  .main-top-bar-btn.active i {
+    @apply bg-primary-lightest text-primary-dark;
+  }
+
+  /* Textarea */
+  .textarea {
+    @apply w-full p-2 border-2 border-gray-300 rounded-xl resize-none overflow-auto;
+    @apply focus:border-primary-dark focus:shadow-none focus:outline-none;
+    @apply transition-colors duration-200;
+  }
+
+  .textarea:focus {
+    transition: transform 0.3s ease;
+  }
+
+  /* Buttons */
+  .submit-btn {
+    @apply block w-full text-center mx-auto items-center gap-1 px-3 py-1.5 bg-primary-dark text-white rounded-lg text-lg font-medium hover:bg-primary-darker transition-colors duration-200;
   }
 
   #resume-content {
     @apply w-full flex flex-col items-center;
   }
 
+  /* Resume Preview */
   .page {
-    @apply bg-white shadow-md;
+    @apply bg-white shadow-xl rounded-lg mx-auto;
     width: 210mm;
+    min-height: 297mm;
+    padding: var(--page-padding, 10mm);
   }
 }
 
 :root {
-  --primary-dark: #81b8ff;
-  --primary-light: #bfdbfe;
   --page-padding: 10mm;
 }
