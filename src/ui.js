@@ -7,12 +7,15 @@ export function initUI() {
     const leftSidebar = document.getElementById('left-sidebar');
     const rightSidebar = document.getElementById('right-sidebar');
     const resumeListBtn = document.getElementById('resume-list-btn');
+    const addResumeBtn = document.getElementById('add-resume-btn');
     const analysisBtn = document.getElementById('analysis-btn');
     const addResumeForm = document.getElementById('add-resume-form');
     const markdownInput = document.querySelector('.textarea');
     const resumeItems = document.getElementById('resume-items') || document.createElement('ul');
+    const formContainer = document.getElementById('form-container');
+    const resumeList = document.getElementById('resume-list');
     resumeItems.id = 'resume-items';
-    document.getElementById('resume-list').appendChild(resumeItems);
+    resumeList.appendChild(resumeItems);
 
     // Initialize storage
     const { saveResume, loadResumes } = initStorage();
@@ -32,16 +35,27 @@ export function initUI() {
                 });
                 resumeItems.appendChild(li);
             });
+            // Show resume list, hide form
+            resumeList.classList.remove('hidden');
+            formContainer.classList.add('hidden');
         } catch (error) {
             console.error('Error loading resumes:', error);
         }
     };
 
-    // Toggle left sidebar
+    // Toggle left sidebar and show resume list
     resumeListBtn.addEventListener('click', () => {
-        leftSidebar.classList.toggle('hidden');
+        leftSidebar.classList.remove('hidden');
         rightSidebar.classList.add('hidden');
-        displayResumes(); // Refresh resume list
+        displayResumes();
+    });
+
+    // Toggle left sidebar and show form
+    addResumeBtn.addEventListener('click', () => {
+        leftSidebar.classList.remove('hidden');
+        rightSidebar.classList.add('hidden');
+        formContainer.classList.remove('hidden');
+        resumeList.classList.add('hidden');
     });
 
     // Toggle right sidebar
@@ -60,7 +74,8 @@ export function initUI() {
                 console.log('Resume saved:', resumeContent);
                 markdownInput.value = '';
                 markdownInput.dispatchEvent(new Event('input')); // Update preview
-                displayResumes(); // Refresh resume list
+                // Show resume list after saving
+                displayResumes();
             } catch (error) {
                 console.error('Error saving resume:', error);
             }
