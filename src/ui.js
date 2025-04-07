@@ -1,4 +1,5 @@
 import { initStorage } from './storage.js';
+import { jsPDF } from 'jspdf';
 
 export function initUI() {
     console.log('Initializing UI');
@@ -9,6 +10,7 @@ export function initUI() {
     const resumeListBtn = document.getElementById('resume-list-btn');
     const addResumeBtn = document.getElementById('add-resume-btn');
     const analysisBtn = document.getElementById('analysis-btn');
+    const exportPdfBtn = document.getElementById('export-pdf-btn');
     const addResumeForm = document.getElementById('add-resume-form');
     const markdownInput = document.querySelector('.textarea');
     const resumeItems = document.getElementById('resume-items') || document.createElement('ul');
@@ -62,6 +64,25 @@ export function initUI() {
     analysisBtn.addEventListener('click', () => {
         rightSidebar.classList.toggle('hidden');
         leftSidebar.classList.add('hidden');
+    });
+
+    // Export PDF
+    exportPdfBtn.addEventListener('click', () => {
+        const doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4',
+        });
+        const content = document.getElementById('resume-content');
+        doc.html(content, {
+            callback: (pdf) => {
+                pdf.save(`resume-${new Date().toISOString().replace(/[:.]/g, '-')}.pdf`);
+            },
+            x: 10,
+            y: 10,
+            width: 190, // A4 width (210mm) - margins
+            windowWidth: content.scrollWidth,
+        });
     });
 
     // Form submission

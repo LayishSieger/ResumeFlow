@@ -16,6 +16,7 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
+    "jspdf": "^3.0.1",
     "marked": "^15.0.12"
   }
 }
