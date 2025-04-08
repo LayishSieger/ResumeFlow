@@ -56,5 +56,18 @@ export function initStorage() {
         });
     };
 
-    return { saveResume, loadResumes };
+    // Delete resume
+    const deleteResume = async (id) => {
+        const db = await openDB();
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+
+        return new Promise((resolve, reject) => {
+            const request = store.delete(id);
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    };
+
+    return { saveResume, loadResumes, deleteResume };
 }

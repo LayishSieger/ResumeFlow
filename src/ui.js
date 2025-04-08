@@ -20,7 +20,7 @@ export function initUI() {
     resumeList.appendChild(resumeItems);
 
     // Initialize storage
-    const { saveResume, loadResumes } = initStorage();
+    const { saveResume, loadResumes, deleteResume } = initStorage();
 
     // Load and display resumes
     const displayResumes = async () => {
@@ -29,12 +29,35 @@ export function initUI() {
             resumeItems.innerHTML = '';
             resumes.forEach((resume) => {
                 const li = document.createElement('li');
-                li.textContent = resume.name;
-                li.className = 'py-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer';
-                li.addEventListener('click', () => {
+                li.className = 'py-2 border-b border-gray-200 hover:bg-gray-100 flex justify-between items-center';
+
+                // Resume name
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = resume.name;
+                nameSpan.className = 'cursor-pointer flex-grow';
+                nameSpan.addEventListener('click', () => {
                     markdownInput.value = resume.content;
                     markdownInput.dispatchEvent(new Event('input')); // Trigger Markdown rendering
                 });
+
+                // Delete button
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+                deleteBtn.className = 'delete-btn text-red-500 hover:text-red-700';
+                deleteBtn.addEventListener('click', async () => {
+                    if (confirm(`Are you sure you want to delete "${resume.name}"?`)) {
+                        try {
+                            await deleteResume(resume.id);
+                            console.log(`Resume deleted: ${resume.name}`);
+                            displayResumes(); // Refresh list
+                        } catch (error) {
+                            console.error('Error deleting resume:', error);
+                        }
+                    }
+                });
+
+                li.appendChild(nameSpan);
+                li.appendChild(deleteBtn);
                 resumeItems.appendChild(li);
             });
             // Show resume list, hide form
