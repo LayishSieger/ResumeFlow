@@ -20,7 +20,7 @@ export function initUI() {
     resumeList.appendChild(resumeItems);
 
     // Initialize storage
-    const { saveResume, loadResumes, deleteResume } = initStorage();
+    const { saveResume, loadResumes, deleteResume, updateResumeName } = initStorage();
 
     // Load and display resumes
     const displayResumes = async () => {
@@ -40,6 +40,23 @@ export function initUI() {
                     markdownInput.dispatchEvent(new Event('input')); // Trigger Markdown rendering
                 });
 
+                // Edit button
+                const editBtn = document.createElement('button');
+                editBtn.innerHTML = '<i class="fa-solid fa-edit"></i>';
+                editBtn.className = 'edit-btn text-blue-500 hover:text-blue-700 mr-2';
+                editBtn.addEventListener('click', async () => {
+                    const newName = prompt(`Enter new name for "${resume.name}":`, resume.name);
+                    if (newName && newName.trim()) {
+                        try {
+                            await updateResumeName(resume.id, newName.trim());
+                            console.log(`Resume renamed to: ${newName}`);
+                            displayResumes(); // Refresh list
+                        } catch (error) {
+                            console.error('Error renaming resume:', error);
+                        }
+                    }
+                });
+
                 // Delete button
                 const deleteBtn = document.createElement('button');
                 deleteBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
@@ -57,6 +74,7 @@ export function initUI() {
                 });
 
                 li.appendChild(nameSpan);
+                li.appendChild(editBtn);
                 li.appendChild(deleteBtn);
                 resumeItems.appendChild(li);
             });

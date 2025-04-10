@@ -69,5 +69,28 @@ export function initStorage() {
         });
     };
 
-    return { saveResume, loadResumes, deleteResume };
+    // Update resume name
+    const updateResumeName = async (id, newName) => {
+        const db = await openDB();
+        const transaction = db.transaction([storeName], 'readwrite');
+        const store = transaction.objectStore(storeName);
+
+        return new Promise((resolve, reject) => {
+            const getRequest = store.get(id);
+            getRequest.onsuccess = () => {
+                const resume = getRequest.result;
+                if (resume) {
+                    resume.name = newName;
+                    const updateRequest = store.put(resume);
+                    updateRequest.onsuccess = () => resolve();
+                    updateRequest.onerror = () => reject(updateRequest.error);
+                } else {
+                    reject(new Error('Resume not found'));
+                }
+            };
+            getRequest.onerror = () => reject(getRequest.error);
+        });
+    };
+
+    return { saveResume, loadResumes, deleteResume, updateResumeName };
 }
