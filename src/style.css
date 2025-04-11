@@ -117,6 +117,12 @@
     @apply text-sm;
   }
 
+  .file-input {
+    @apply w-full p-2 border-2 border-gray-300 rounded-xl;
+    @apply focus:border-primary-dark focus:outline-none;
+    @apply transition-colors duration-200;
+  }
+
   .page {
     @apply bg-white shadow-xl rounded-lg mx-auto;
     width: 210mm;

@@ -50,9 +50,8 @@
               <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">Markdown format</a>
               (.md or .txt), load from saved resume list or write/edit/paste below:
             </p>
-            <textarea class="textarea" placeholder="Paste or write your Markdown resume here...">
-            </textarea>
-
+            <input type="file" id="resume-file-input" accept=".md,.txt" class="file-input">
+            <textarea class="textarea" placeholder="Paste or write your Markdown resume here..."></textarea>
             <!-- Add Resume Form -->
             <form id="add-resume-form" class="space-y-2 flex flex-col flex-grow">
               <button type="submit" class="submit-btn">Save
