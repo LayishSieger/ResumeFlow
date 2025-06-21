@@ -54,7 +54,7 @@
   }
 
   #resume-content {
-    @apply w-full flex flex-col overflow-y-auto items-start;
+    @apply w-full flex flex-col items-start overflow-y-auto;
   }
 
   #resume-content h1 {
@@ -97,7 +97,10 @@
     @apply font-bold leading-loose;
   }
 
-  /* Resume Preview */
+  #resume-list li {
+    @apply py-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer;
+  }
+
   .page {
     @apply bg-white shadow-xl rounded-lg mx-auto;
     width: 210mm;
