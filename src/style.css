@@ -98,7 +98,15 @@
   }
 
   #resume-list li {
-    @apply py-2 border-b border-gray-200 hover:bg-gray-100 cursor-pointer;
+    @apply py-2 border-b border-gray-200 hover:bg-gray-100;
+  }
+
+  .delete-btn {
+    @apply p-1 rounded hover:bg-red-100;
+  }
+
+  .delete-btn i {
+    @apply text-sm;
   }
 
   .page {
