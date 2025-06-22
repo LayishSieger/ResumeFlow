@@ -13,6 +13,7 @@ export function initUI() {
     const exportPdfBtn = document.getElementById('export-pdf-btn');
     const addResumeForm = document.getElementById('add-resume-form');
     const markdownInput = document.querySelector('.textarea');
+    const resumeFileInput = document.getElementById('resume-file-input');
     const resumeItems = document.getElementById('resume-items') || document.createElement('ul');
     const formContainer = document.getElementById('form-container');
     const resumeList = document.getElementById('resume-list');
@@ -124,6 +125,26 @@ export function initUI() {
             width: 190, // A4 width (210mm) - margins
             windowWidth: content.scrollWidth,
         });
+    });
+
+    // File upload
+    resumeFileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file && (file.name.endsWith('.md') || file.name.endsWith('.txt'))) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                markdownInput.value = event.target.result;
+                markdownInput.dispatchEvent(new Event('input')); // Trigger Markdown rendering
+            };
+            reader.onerror = () => {
+                console.error('Error reading file:', reader.error);
+                alert('Failed to read the file. Please try again.');
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a .md or .txt file.');
+            resumeFileInput.value = ''; // Clear invalid input
+        }
     });
 
     // Form submission
