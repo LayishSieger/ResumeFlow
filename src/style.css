@@ -109,6 +109,14 @@
     @apply text-sm;
   }
 
+  .edit-btn {
+    @apply p-1 rounded hover:bg-blue-100;
+  }
+
+  .edit-btn i {
+    @apply text-sm;
+  }
+
   .page {
     @apply bg-white shadow-xl rounded-lg mx-auto;
     width: 210mm;
