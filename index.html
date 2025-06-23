@@ -45,17 +45,18 @@
         <div id="form-container" class="flex flex-col h-full overflow-hidden">
           <!-- Form Content -->
           <div class="flex flex-col flex-grow space-y-2">
-            <p>
+            <p id="form-instructions">
               Upload resume in
               <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">Markdown format</a>
               (.md or .txt), load from saved resume list or write/edit/paste below:
             </p>
+            <!-- File Upload -->
             <input type="file" id="resume-file-input" accept=".md,.txt" class="file-input">
             <textarea class="textarea" placeholder="Paste or write your Markdown resume here..."></textarea>
             <!-- Add Resume Form -->
             <form id="add-resume-form" class="space-y-2 flex flex-col flex-grow">
-              <button type="submit" class="submit-btn">Save
-                Resume</button>
+              <button type="submit" id="save-resume-btn" class="submit-btn">Save Resume</button>
+              <button type="submit" id="save-changes-btn" class="submit-btn hidden" disabled>Save Changes</button>
             </form>
           </div>
         </div>
@@ -68,7 +69,10 @@
       <!-- center content -->
       <section id="center-content" class="flex-grow p-4">
         <div id="resume-preview">
-          <h3 class="title"> Resume Preview</h3>
+          <div class="flex justify-between items-center mb-2">
+            <h3 class="title">Resume Preview</h3>
+            <button id="edit-resume-btn" class="submit-btn hidden">Edit</button>
+          </div>
           <div id="resume-content" class="page"></div>
         </div>
       </section>
