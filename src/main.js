@@ -1,7 +1,7 @@
 import { initUI } from './modules/ui.js';
 import { initMarkdown } from './modules/markdown.js';
 import { initStorage } from './modules/storage.js';
-import { initFileHandler } from './modules/FileHandler.js';
+import { initFileHandler } from './modules/fileHandler.js';
 import { initTailor } from './modules/tailor.js';
 import { initAnalysis } from './modules/analysis.js';
 import { populateResumeList } from './modules/ui.js';
