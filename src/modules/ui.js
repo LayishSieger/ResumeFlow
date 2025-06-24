@@ -1,5 +1,3 @@
-import { jsPDF } from 'jspdf';
-import { marked } from 'marked';
 import { splitIntoPages } from './pagination.js';
 import { renderWelcomeModal } from '../components/WelcomeModal.js';
 import { renderUserDetailsModal } from '../components/UserDetailsModal.js'; // Add import
@@ -986,10 +984,8 @@ export function initUI() {
             <html>
             <head>
                 <title>Resume Print</title>
-                <link rel="stylesheet" href="src/styles/main.css">
+                <link rel="stylesheet" href="src/style.css">
                 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Raleway&display=swap">
-                <script src="https://kit.fontawesome.com/da85c8bdce.js" crossorigin="anonymous"></script>
-
             </head>
             <body>${printContent.outerHTML}</body>
             </html>
