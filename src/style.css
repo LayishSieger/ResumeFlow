@@ -4,21 +4,29 @@
 
 @layer base {
   body {
-    @apply font-raleway bg-black text-gray-600 flex flex-col h-screen w-screen overflow-hidden scrollbar-thin min-h-screen;
+    @apply font-raleway text-gray-600 scroll-smooth scrollbar-thin;
   }
 
   a {
-    @apply no-underline text-primary-dark;
+    @apply no-underline text-gray-600;
+    /* Consolidated: Removed redundant custom 'text-decoration: none' */
   }
 
   a:hover {
-    @apply text-primary-darker;
+    @apply text-primary-dark;
+    /* Use Tailwind extended color instead of var(--primary-dark) */
   }
 }
 
 @layer components {
+
+  /* Main Top Bar */
   #main-top-bar {
     @apply relative flex items-center justify-between p-2 border-b border-gray-200;
+  }
+
+  #title {
+    @apply absolute left-1/2 transform -translate-x-1/2;
   }
 
   .main-top-bar-btn {
@@ -27,13 +35,139 @@
 
   .main-top-bar-btn.active,
   .main-top-bar-btn.active i {
-    @apply bg-primary-lightest text-primary-dark;
+    @apply bg-blue-100 text-blue-300;
+  }
+
+  #addMode #viewAnalysisBtn {
+    @apply hidden;
+  }
+
+  /* Mobile-specific styles */
+  @media (max-width: 840px) {
+
+    .right-sidebar,
+    .left-sidebar {
+      @apply hidden;
+    }
+
+    #addMode.view-preview-active #resume-preview {
+      @apply block;
+    }
+
+    #addMode.view-preview-active #add-resume-container,
+    #addMode.view-preview-active #tailor-resume-form {
+      @apply hidden;
+    }
+
+    #viewMode #analysis-content,
+    #viewMode #saved-resumes {
+      @apply hidden;
+    }
+
+    #viewMode.view-analysis-active #analysis-content {
+      @apply block;
+    }
+
+    #viewMode.view-mode-active #saved-resumes {
+      @apply block;
+    }
+  }
+
+  /* Tabs */
+  .tab-container {
+    @apply relative bg-gray-100 p-1 rounded-full;
+  }
+
+  .tab-btn {
+    @apply relative z-10 bg-transparent px-4 py-1.5 rounded-full transition-colors duration-300;
+  }
+
+  .tab-background {
+    @apply absolute top-1 bottom-1 z-0 rounded-full transition-all duration-300;
+    background-color: var(--primary-light);
+    transition: transform 0.3s ease, width 0.3s ease, left 0.3s ease;
+  }
+
+  /* Form Container */
+  .form-container {
+    @apply flex flex-col h-full overflow-hidden;
+  }
+
+  /* Milkdown Editor Container */
+  #editor {
+    @apply w-full h-96 rounded-xl bg-white;
+  }
+
+  /* Milkdown Editor */
+  #editor .milkdown {
+    @apply w-full h-full p-2;
+  }
+
+  /* Milkdown Editor Content */
+  #editor {
+    @apply w-full h-96 rounded-xl bg-white overflow-hidden;
+  }
+
+  .milkdown-menu {
+    @apply flex flex-row items-center gap-2 p-2 bg-gray-100 rounded-t-xl border-b border-gray-200;
+  }
+
+  .milkdown-menu button {
+    @apply px-2 py-1 rounded hover:bg-gray-200 transition-colors;
+  }
+
+  #editor .ProseMirror {
+    @apply p-4 w-full h-full outline-none cursor-text;
+    contenteditable: true;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+
+  /* Apply resume-content styles to ProseMirror elements */
+  #editor .ProseMirror h1 {
+    @apply text-5xl text-primary-dark font-normal leading-tight;
+  }
+
+  #editor .ProseMirror h2 {
+    @apply text-2xl text-primary-dark font-normal leading-tight mt-4;
+  }
+
+  #editor .ProseMirror h3 {
+    @apply text-xl font-bold mt-4;
+  }
+
+  #editor .ProseMirror p {
+    @apply my-4 leading-normal;
+  }
+
+  #editor .ProseMirror a {
+    @apply text-blue-300 no-underline cursor-pointer;
+  }
+
+  #editor .ProseMirror a:hover {
+    @apply text-primary-dark;
+  }
+
+  #editor .ProseMirror ul {
+    @apply pl-8 my-4 list-disc;
+  }
+
+  #editor .ProseMirror ul ul {
+    @apply pl-8 my-2 list-circle;
+  }
+
+  #editor .ProseMirror li {
+    @apply my-2;
+  }
+
+  #editor .ProseMirror strong {
+    @apply font-bold leading-loose;
   }
 
   /* Textarea */
   .textarea {
-    @apply w-full h-1/2 p-2 border-2 border-gray-300 rounded-xl resize-none overflow-auto;
-    @apply focus:border-primary-dark focus:shadow-none focus:outline-none;
+    @apply w-full p-2 border-2 border-gray-300 rounded-xl resize-none overflow-auto;
+    @apply focus:border-blue-400 focus:ring-blue-400 focus:shadow-none focus:outline-none;
     @apply transition-colors duration-200;
   }
 
@@ -43,11 +177,156 @@
 
   /* Buttons */
   .submit-btn {
-    @apply block w-auto text-center items-center gap-1 px-3 py-1.5 bg-primary-dark text-white rounded-lg text-lg font-medium hover:bg-primary-darker transition-colors duration-200;
+    @apply block w-full text-center mx-auto items-center gap-1 px-3 py-1.5 bg-blue-400 text-white rounded-lg text-lg font-medium hover:bg-blue-700 transition-colors duration-200;
   }
 
-  .submit-btn:disabled {
-    @apply bg-gray-400 cursor-not-allowed hover:bg-gray-400;
+  .btn {
+    @apply flex items-center gap-1 px-3 py-1.5 bg-blue-400 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  }
+
+  #resume-list ul {
+    position: relative;
+  }
+
+  #resume-list li {
+    position: relative;
+    z-index: 1;
+  }
+
+  #resume-list li.selected {
+    @apply bg-blue-100 relative z-10;
+  }
+
+  #resume-list .selected-background {
+    @apply absolute top-0 left-0 right-0 z-0 rounded transition-all duration-300;
+    background-color: var(--primary-light);
+    height: 0;
+    opacity: 0;
+  }
+
+  #resume-list .selected-background.active {
+    opacity: 1;
+  }
+
+  #resume-list .editable-title {
+    @apply flex-grow pr-2 truncate;
+    user-select: text;
+    cursor: text;
+  }
+
+  #resume-list .editable-title[contenteditable="true"] {
+    @apply outline-none rounded-sm;
+    /* truncate; */
+    white-space: normal;
+    overflow: visible;
+    max-width: calc(100% - 80px);
+    user-select: text;
+    cursor: text;
+  }
+
+  #resume-list .delete-btn,
+  #resume-list .edit-btn {
+    @apply text-gray-500 transition-opacity duration-200 opacity-0;
+  }
+
+  #resume-list .edit-save-btn {
+    @apply text-green-500;
+  }
+
+  #resume-list .edit-save-btn:hover {
+    @apply text-green-700;
+  }
+
+  #resume-list .delete-btn:hover {
+    @apply text-red-500;
+  }
+
+  #resume-list .edit-btn:hover {
+    @apply text-blue-500;
+  }
+
+  #resume-list li:hover .delete-btn,
+  #resume-list li:hover .edit-btn {
+    @apply opacity-100;
+  }
+
+  #resume-list .edit-container {
+    @apply flex items-center gap-2 w-full;
+  }
+
+  #resume-list li.selected:hover .delete-btn,
+  #resume-list li.selected:hover .edit-btn,
+  #resume-list li.selected:hover .edit-save-btn,
+  #resume-list li.selected:hover .edit-cancel-btn {
+    @apply opacity-100;
+  }
+
+  #resume-list .delete-confirm-container {
+    @apply flex items-center gap-2 flex-shrink-0;
+    /* @apply flex items-center gap-2;
+        flex-shrink: 0; */
+  }
+
+  #resume-list .cancel-btn {
+    @apply text-gray-500 hover:text-gray-700 cursor-pointer;
+  }
+
+  #resume-list .confirm-delete-btn {
+    @apply text-red-500 hover:text-red-700 cursor-pointer;
+  }
+
+  .resume-item {
+    @apply p-2 rounded-lg cursor-pointer hover:bg-gray-100;
+  }
+
+  /* Resume Preview Containers */
+  #top-bar {
+    @apply relative flex items-center justify-between p-2;
+  }
+
+  #top-bar .btn {
+    @apply h-8;
+    /* Adjusted: 32px to Tailwind's h-8 */
+  }
+
+  /* Load Resume Dropdown Menu */
+  #load-resume-menu {
+    @apply absolute p-1 right-0 top-10 w-48 bg-white shadow-lg rounded-lg z-10;
+  }
+
+  #load-resume-menu button {
+    @apply w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors duration-200;
+  }
+
+  #load-resume-menu button:hover {
+    @apply bg-gray-100;
+  }
+
+  #menu-btn {
+    @apply items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors duration-200;
+  }
+
+  #top-bar.narrow .btn span {
+    @apply hidden;
+  }
+
+  /* Dropdown Menu */
+  #preview-menu {
+    @apply absolute p-1 right-2 top-12 w-48 bg-white shadow-lg rounded-lg z-10
+  }
+
+  #preview-menu button {
+    @apply rounded-lg w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors duration-200;
+  }
+
+  #preview-menu button.page-view-active {
+    @apply font-bold text-blue-600;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    #top-bar.narrow .btn:hover span {
+      display: inline;
+    }
   }
 
   /* Resume Content Preview */
@@ -57,24 +336,24 @@
     transform: scale(1);
   }
 
-  #resume-content {
-    @apply w-full flex flex-col items-start overflow-y-auto;
-  }
-
   #resume-content h1 {
     @apply text-5xl text-primary-dark font-normal leading-tight;
+    /* Consolidated: Replaced font-size: 3rem and color: var(--primary-dark) */
   }
 
   #resume-content h2 {
     @apply text-2xl text-primary-dark font-normal leading-tight mt-4;
+    /* Consolidated: Replaced font-size: 1.5rem, margin: 2rem 0 0 */
   }
 
   #resume-content h3 {
     @apply text-xl font-bold mt-4;
+    /* Consolidated: Replaced font-size: 1.2rem, font-weight: 700, margin: 2rem 0 0 */
   }
 
   #resume-content p {
     @apply my-4 leading-normal;
+    /* Consolidated: Replaced margin: 1rem 0, line-height: 1.5 */
   }
 
   #resume-content a {
@@ -87,54 +366,74 @@
 
   #resume-content ul {
     @apply pl-8 my-4 list-disc;
+    /* Consolidated: Replaced padding-left: 2rem, margin: 1rem 0 */
   }
 
   #resume-content ul ul {
     @apply pl-8 my-2 list-circle;
+    /* Consolidated: Replaced padding-left: 2rem, margin: 0.5rem 0 */
   }
 
   #resume-content li {
     @apply my-2;
+    /* Consolidated: Replaced margin: 0.5rem 0 */
   }
 
   #resume-content strong {
     @apply font-bold leading-loose;
+    /* Consolidated: Replaced line-height: 2 */
   }
 
-  #resume-list li {
-    @apply py-2 border-b border-gray-200 hover:bg-gray-100;
-  }
-
-  .delete-btn {
-    @apply p-1 rounded hover:bg-red-100;
-  }
-
-  .delete-btn i {
-    @apply text-sm;
-  }
-
-  .edit-btn {
-    @apply p-1 rounded hover:bg-blue-100;
-  }
-
-  .edit-btn i {
-    @apply text-sm;
-  }
-
-  .file-input {
-    @apply w-full p-2 border-2 border-gray-300 rounded-xl text-gray-600;
-    @apply focus:border-primary-dark focus:outline-none;
-    @apply transition-colors duration-200;
-  }
-
+  /* Page Layout for Preview and Print */
   .page {
-    @apply bg-white shadow-xl rounded-lg mx-auto;
+    @apply bg-white shadow-md mb-[5mm];
     width: 210mm;
-    min-height: 297mm;
-    padding: var(--page-padding, 10mm);
+    transform-origin: top center;
+  }
+
+  .page.paginated {
+    aspect-ratio: 210 / 297;
+  }
+
+  @media print {
+
+    body,
+    .page {
+      @apply font-raleway;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      width: 210mm !important;
+      height: 297mm !important;
+      padding: var(--page-padding) !important;
+      transform: none !important;
+      box-shadow: none !important;
+      page-break-after: auto !important;
+    }
+  }
+
+  /* Warning and Error Messages */
+  .warning {
+    @apply bg-yellow-100 text-yellow-700 p-4 mb-4 rounded-md;
+  }
+
+  .error {
+    @apply bg-red-100 text-red-700 p-4 mb-4 rounded-md;
+  }
+
+  /* Welcome Modal */
+  #welcome-modal {
+    @apply opacity-100;
+  }
+
+  #welcome-modal.opacity-0 {
+    @apply pointer-events-none;
   }
 }
 
+/* Custom CSS for CSS Variables (Retained) */
 :root {
+  --background: #000000;
+  --primary-dark: #81b8ff;
+  --primary-light: #bfdbfe;
   --page-padding: 10mm;
 }

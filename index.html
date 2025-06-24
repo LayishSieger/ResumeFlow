@@ -2,18 +2,18 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ResumeFlow</title>
   <script src="https://kit.fontawesome.com/da85c8bdce.js" crossorigin="anonymous"></script>
-  <script type="module" src="src/main.js"></script>
+  <script type="module" src="/src/main.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
   </style>
 </head>
 
-<body>
-  <div class="bg-white rounded-lg overflow-hidden h-screen flex flex-col relative">
+<body class="bg-black h-screen w-screen overflow-hidden scrollbar-thin font-raleway flex flex-col min-h-screen">
+  <div id="main-window" class="bg-white rounded-lg overflow-hidden h-screen flex flex-col relative">
     <!-- Main Top Bar -->
     <div id="main-top-bar">
       <div>
@@ -32,58 +32,140 @@
         <button id="analysis-btn" class="main-top-bar-btn" title="View Analysis">
           <i class="fa-solid fa-chart-simple"></i>
         </button>
-        <button id="export-pdf-btn" class="main-top-bar-btn" title="Export Resume as PDF">
-          <i class="fa-solid fa-download"></i>
-        </button>
       </div>
     </div>
+
     <!-- Main Content -->
-    <main class="flex h-screen">
-      <!-- left sidebar -->
-      <aside id="left-sidebar" class="w-1/5 bg-white p-4">
+    <main class="flex-grow flex overflow-hidden">
+      <!-- Left Sidebar -->
+      <div id="left-sidebar" class="min-w-[428px] flex flex-col flex-grow p-3 space-y-4 overflow-auto h-full">
         <!-- Form -->
         <div id="form-container" class="flex flex-col h-full overflow-hidden">
+          <!-- Tabs -->
+          <div class="flex justify-center items-center mb-2">
+            <div class="tab-container" role="tablist">
+              <div class="tab-background"></div>
+              <button class="tab-btn active-tab" data-tab="add-resume" role="tab" aria-selected="true">Add
+                Resume</button>
+              <button class="tab-btn" data-tab="tailor-resume" role="tab" aria-selected="false">Tailor
+                Resume</button>
+            </div>
+          </div>
           <!-- Form Content -->
           <div class="flex flex-col flex-grow space-y-2">
-            <p id="form-instructions">
+            <!-- Shared Resume Textarea -->
+            <p>
               Upload resume in
               <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">Markdown format</a>
               (.md or .txt), load from saved resume list or write/edit/paste below:
             </p>
-            <!-- File Upload -->
-            <input type="file" id="resume-file-input" accept=".md,.txt" class="file-input">
-            <textarea class="textarea" placeholder="Paste or write your Markdown resume here..."></textarea>
+            <div class="flex justify-end space-x-2 mb-2">
+              <label for="resume-file" id="upload-btn" class="btn" type="button">
+                <i class="fas fa-file-upload"></i> Upload
+              </label>
+              <div class="relative inline-block">
+                <button id="load-resume-btn" class="btn">
+                  <i class="fa-solid fa-file-import"></i>
+                  Load
+                </button>
+                <div id="load-resume-menu" class="">
+                  <!-- Resume items will be populated here -->
+                </div>
+              </div>
+              <input type="file" id="resume-file" accept=".md, .txt" class="hidden" />
+            </div>
+            <textarea id="resume-textarea" class="textarea flex flex-col flex-grow"
+              placeholder="Paste or write your Markdown resume here..."></textarea>
+            <!-- New Milkdown editor -->
+            <!-- <label for="editor" class="mt-4">Milkdown Editor (Markdown with Live Preview):</label>
+                        <div id="editor" class="rounded-xl"></div> -->
+
             <!-- Add Resume Form -->
             <form id="add-resume-form" class="space-y-2 flex flex-col flex-grow">
-              <button type="submit" id="save-resume-btn" class="submit-btn">Save Resume</button>
-              <button type="submit" id="save-changes-btn" class="submit-btn hidden" disabled>Save Changes</button>
+              <button type="submit" class="submit-btn">Save
+                Resume</button>
+            </form>
+
+            <!-- Tailor Resume Form -->
+            <form id="tailor-resume-form" class="space-y-2 hidden flex flex-col flex-grow">
+              <p>Job description:</p>
+              <textarea id="job-description" class="textarea" placeholder="Paste job description here..."></textarea>
+              <div id="provider-select-container" class="mb-4">
+                <label for="provider-select" class="block text-gray-700">Provider</label>
+                <select id="provider-select" class="border p-2 w-full">
+                  <option value="openrouter">
+                    OpenRouter</option>
+                  <option value="grok">
+                    Grok</option>
+                </select>
+              </div>
+              <div id="model-select-container" class="mb-4 hidden">
+                <label for="model-select" class="block text-gray-700">Model</label>
+                <select id="model-select" class="border p-2 w-full">
+                  <!-- Populated dynamically by ui.js -->
+                </select>
+              </div>
+              <button type="submit" class="submit-btn">Tailor
+                Resume</button>
             </form>
           </div>
         </div>
+
         <!-- Resume List -->
         <div id="resume-list">
           <h3 class="font-semibold mb-2">Saved Resumes</h3>
           <!-- Loaded from IndexedDB -->
         </div>
-      </aside>
-      <!-- center content -->
-      <section id="center-content" class="flex-grow p-4">
+      </div>
+
+      <!-- Center Content -->
+      <div id="center-content"
+        class="w-1/2 min-w-[428px] flex flex-col flex-grow p-3 space-y-4 overflow-x-clip overflow-y-auto">
+        <!-- Resume Preview -->
         <div id="resume-preview">
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="title">Resume Preview</h3>
-            <button id="edit-resume-btn" class="submit-btn hidden">Edit</button>
+          <header id="top-bar">
+            <h3 class="title"> Resume Preview</h3>
+            <div class="flex gap-2">
+              <button id="print-btn" class="btn">
+                <i class="fa-solid fa-print"></i>
+                <span>Print</span>
+              </button>
+              <button id="download-btn" class="btn">
+                <i class="fa-solid fa-download"></i>
+                <span>Download PDF</span>
+              </button>
+              <button id="menu-btn" aria-label="More options">
+                <i class="fa-solid fa-ellipsis-v"></i>
+              </button>
+              <div id="preview-menu">
+                <button id="page-view-btn" class="menu-btn">Page
+                  View</button>
+                <button id="view-original-btn" class="menu-btn hidden">
+                  <i class="fa-solid fa-exchange-alt"></i>
+                  <span>View Original Resume</span>
+                </button>
+              </div>
+            </div>
+          </header>
+          <!-- Resume content -->
+          <div id="resume-content">
+            <!-- Rendered markdown -->
           </div>
-          <div id="resume-content" class="page"></div>
         </div>
-      </section>
-      <!-- right sidebar -->
-      <aside id="right-sidebar" class="w-1/5 bg-white p-4 hidden">
-        <div id="analysis-content"></div>
-        <h3 class="title">Analysis</h3>
-      </aside>
+      </div>
+
+      <!-- Right Sidebar -->
+      <div id="right-sidebar" class="w-1/4 min-w-[428px] flex flex-col flex-grow p-3 space-y-4 overflow-auto">
+        <!-- Analysis -->
+        <div id="analysis">
+          <div id="analysis-content" class="text-sm space-y-2">
+            <!-- Suggestions, match %, missing keywords -->
+          </div>
+        </div>
+      </div>
     </main>
   </div>
-  <footer class="text-center p-2">
+  <footer class="mt-auto text-center p-2">
     <p>&copy;
       <script>document.write(new Date().getFullYear())</script> Layish Sieger - ResumeFlow
     </p>
