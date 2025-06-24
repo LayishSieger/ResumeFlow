@@ -1,4 +1,4 @@
-## Summary
+export const exampleResume = `## Summary
 
 A concise, 2-3 sentence summary of your professional background, skills, and goals. Highlight what makes you unique or valuable to employers.
 
@@ -56,4 +56,4 @@ A concise, 2-3 sentence summary of your professional background, skills, and goa
 ## Additional Information (Optional)
 
 - Languages: Language 1 (Fluent), Language 2 (Intermediate)
-- Interests: Interest 1, Interest 2
+- Interests: Interest 1, Interest 2`;
