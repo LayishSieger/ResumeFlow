@@ -1,5 +1,6 @@
 import { marked } from 'marked';
 import { initStorage } from './storage.js';
+import { exampleResume } from '../data/exampleResume.js';
 
 let markdownPreview = null;
 let resumeTextarea = null;
@@ -13,22 +14,8 @@ export function initMarkdown() {
         console.error('Markdown elements not found:', { markdownPreview, resumeTextarea });
         return;
     }
-    // Load example markdown from file on page load
-    fetch('assets/example_resume.md')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Failed to fetch example_resume.md: ${response.statusText}`);
-            }
-            return response.text();
-        })
-        .then(text => {
-            resumeTextarea.value = text;
-            resumeTextarea.dispatchEvent(new Event('input'));
-        })
-        .catch(error => {
-            console.error('Error fetching example_resume.md:', error);
-            resumeTextarea.value = '# Error\nFailed to load example resume. Please upload a .md or .txt file.';
-        });
+
+    resumeTextarea.value = exampleResume;
 
     // Live markdown preview
     resumeTextarea.addEventListener('input', () => {

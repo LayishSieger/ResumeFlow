@@ -64,7 +64,7 @@ export function initStorage() {
         return !!userDetails;
     };
 
-    // Existing methods
+    // Check if the database is empty
     const isDatabaseEmpty = async () => {
         if (!db) await initDB();
         return new Promise((resolve, reject) => {
